@@ -3,6 +3,8 @@ import controlP5.*;
 
 /*
  * v0.2 2016 Jul. 26
+ *   - read serial values to graph data
+ *   - add [numSeries1] [numSeries2]
  *   - add graph drawing feature
  * v0.1 2016 Jul. 26
  *   - add serialEvent()
@@ -41,6 +43,8 @@ float bias2 = 0.0;
 
 int btnX1 = 40;
 int btnX2 = 70;
+int numSeries1 = 0;
+int numSeries2 = 0;
 
 void data_setup() {
    for(int idx=0; idx < numData; idx++) {
@@ -113,7 +117,7 @@ void comUI_setup() {
 }
 
 void setup() {
-  size(500, 500);
+  size(800, 500);
   frameRate(10);
   data_setup();
   graph_setup();
@@ -135,13 +139,79 @@ void ComPort(int n)
   myPort.bufferUntil('\n');  
 }
 
+void enlarge1() {
+  multi1 *= 2.0;
+}
+void shrink1() {
+  multi1 *= 0.5; 
+}
+void upper1() {
+  bias1 += 10;
+}  
+void lower1() {
+  bias1 -= 10;
+}
+
+void enlarge2() {
+  multi2 *= 2.0;
+}
+void shrink2() {
+  multi2 *= 0.5; 
+}
+void upper2() {
+  bias2 += 10;
+}  
+void lower2() {
+  bias2 -= 10;
+}
+
 void serialEvent(Serial myPort) {
   String mystr = myPort.readStringUntil('\n');
   mystr = trim(mystr);
   println(mystr);
+  
+  String strs[] = split(mystr, ' ');
+//  println(strs[0]);
+//  println(strs[2]);
+  
+  float vals[] = float(split(mystr, ' '));
+  
+  datavals1[numSeries1] = vals[0];
+  numSeries1++;
+  datavals2[numSeries2] = vals[2];  // TODO: get at [1]
+  numSeries2++;  
+}
+
+void drawGraph() {
+  stroke(0, 0, 0);
+  fill(255);
+  rect(grstartx, grstarty, grwidth, grheight);
+
+  float work;
+  stroke(0, 0, 0); // for series1  
+  for(int idx=1; idx < numSeries1; idx++) {
+    float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
+    work = datavals1[idx-1] * multi1 + bias1;
+    float sty = map(work, 0, 100, grheight + grstarty, grstarty);
+    float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
+    work = datavals1[idx] * multi1 + bias1;
+    float ety = map(work, 0, 100, grheight + grstarty, grstarty);
+    line(stx, sty, etx, ety);
+  }
+
+  stroke(255, 0, 0); // for series2
+  for(int idx=1; idx < numSeries2; idx++) {
+    float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
+    work = datavals2[idx-1] * multi2 + bias2;
+    float sty = map(work, 0, 100, grheight + grstarty, grstarty);
+    float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
+    work = datavals2[idx] * multi2 + bias2;
+    float ety = map(work, 0, 100, grheight + grstarty, grstarty);
+    line(stx, sty, etx, ety);
+  }
 }
 
 void draw() {
-  background(0);
-  
+  background(150);
+  drawGraph();
 }
