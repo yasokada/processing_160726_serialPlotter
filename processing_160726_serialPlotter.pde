@@ -181,7 +181,7 @@ void serialEvent(Serial myPort) {
     
   String wrk;
   for(int si = 0; si < maxnumSeries; si++) { // si: series index
-    wrk = mystr.split("\\s+")[0];
+    wrk = mystr.split("\\s+")[si];
     if (wrk.length() > 0) {
       datamatrix[si][numSeriesData[si]] = float(wrk);
       numSeriesData[si]++;
