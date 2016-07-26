@@ -172,14 +172,8 @@ void serialEvent(Serial myPort) {
   String mystr = myPort.readStringUntil('\n');
   mystr = trim(mystr);
   println(mystr);
-  
-  String strs[] = split(mystr, ' ');
-//  println(strs[0]);
-//  println(strs[2]);
-  
-  float vals[] = new float [maxnumSeries];
+    
   String wrk;
-  
   wrk = mystr.split("\\s+")[0];
   if (wrk.length() > 0) {
     datavals1[numSeries1] = float(wrk);
