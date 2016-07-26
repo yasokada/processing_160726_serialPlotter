@@ -2,6 +2,8 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ * v0.3 2016 Jul. 27
+ *   - use String split() instead of processing split() to parse received data strings
  * v0.2 2016 Jul. 26
  *   - read serial values to graph data
  *   - add [numSeries1] [numSeries2]
@@ -25,6 +27,7 @@ int grheight = 350;
 int numData = 300;
 float[] datavals1 = new float [numData];
 float[] datavals2 = new float [numData];
+final int maxnumSeries = 4;
 
 // for series1
 ControlP5 btnEnlarge1;
@@ -174,12 +177,19 @@ void serialEvent(Serial myPort) {
 //  println(strs[0]);
 //  println(strs[2]);
   
-  float vals[] = float(split(mystr, ' '));
+  float vals[] = new float [maxnumSeries];
+  String wrk;
   
-  datavals1[numSeries1] = vals[0];
-  numSeries1++;
-  datavals2[numSeries2] = vals[2];  // TODO: get at [1]
-  numSeries2++;  
+  wrk = mystr.split("\\s+")[0];
+  if (wrk.length() > 0) {
+    datavals1[numSeries1] = float(wrk);
+    numSeries1++;
+  }
+  wrk = mystr.split("\\s+")[1];
+  if (wrk.length() > 0) {
+    datavals2[numSeries2] = float(wrk);
+    numSeries2++;  
+  }
 }
 
 void drawGraph() {
