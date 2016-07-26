@@ -183,7 +183,7 @@ void serialEvent(Serial myPort) {
   for(int si = 0; si < maxnumSeries; si++) { // si: series index
     wrk = mystr.split("\\s+")[0];
     if (wrk.length() > 0) {
-      datamatrix[si][numSeriesData[0]] = float(wrk);
+      datamatrix[si][numSeriesData[si]] = float(wrk);
       numSeriesData[si]++;
     }
   }
