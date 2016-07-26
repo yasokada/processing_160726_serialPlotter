@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.4 2016 Jul. 27
+ *   - use for loop for parsing received data string for serieses
  *   - use numSeriesData[] instead of [numSeries1],[numSeries2]
  *   - use datamatrix[][] instead of datavals1[], datavals2[]
  * v0.3 2016 Jul. 27
@@ -179,15 +180,12 @@ void serialEvent(Serial myPort) {
   println(mystr);
     
   String wrk;
-  wrk = mystr.split("\\s+")[0];
-  if (wrk.length() > 0) {
-    datamatrix[0][numSeriesData[0]] = float(wrk);
-    numSeriesData[0]++;
-  }
-  wrk = mystr.split("\\s+")[1];
-  if (wrk.length() > 0) {
-    datamatrix[1][numSeriesData[1]] = float(wrk);
-    numSeriesData[1]++;  
+  for(int si = 0; si < maxnumSeries; si++) { // si: series index
+    wrk = mystr.split("\\s+")[0];
+    if (wrk.length() > 0) {
+      datamatrix[si][numSeriesData[0]] = float(wrk);
+      numSeriesData[si]++;
+    }
   }
 }
 
