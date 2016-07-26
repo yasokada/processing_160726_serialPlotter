@@ -2,6 +2,8 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ * v0.4 2016 Jul. 27
+ *   - use datamatrix[][] instead of datavals1[], datavals2[]
  * v0.3 2016 Jul. 27
  *   - use String split() instead of processing split() to parse received data strings
  * v0.2 2016 Jul. 26
@@ -24,10 +26,9 @@ int grstarty = 100;
 int grwidth = 600;
 int grheight = 350;
 
-int numData = 300;
-float[] datavals1 = new float [numData];
-float[] datavals2 = new float [numData];
+final int numData = 300;
 final int maxnumSeries = 4;
+float[][] datamatrix = new float [maxnumSeries][numData];
 
 // for series1
 ControlP5 btnEnlarge1;
@@ -51,10 +52,10 @@ int numSeries2 = 0;
 
 void data_setup() {
    for(int idx=0; idx < numData; idx++) {
-     datavals1[idx] = random(100);
+     datamatrix[0][idx] = random(100);
    }
    for(int idx=0; idx < numData; idx++) {
-     datavals2[idx] = random(100);
+     datamatrix[1][idx] = random(100);
    }
 }
 
@@ -176,12 +177,12 @@ void serialEvent(Serial myPort) {
   String wrk;
   wrk = mystr.split("\\s+")[0];
   if (wrk.length() > 0) {
-    datavals1[numSeries1] = float(wrk);
+    datamatrix[0][numSeries1] = float(wrk);
     numSeries1++;
   }
   wrk = mystr.split("\\s+")[1];
   if (wrk.length() > 0) {
-    datavals2[numSeries2] = float(wrk);
+    datamatrix[1][numSeries2] = float(wrk);
     numSeries2++;  
   }
 }
@@ -195,10 +196,10 @@ void drawGraph() {
   stroke(0, 0, 0); // for series1  
   for(int idx=1; idx < numSeries1; idx++) {
     float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
-    work = datavals1[idx-1] * multi1 + bias1;
+    work = datamatrix[0][idx-1] * multi1 + bias1;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
-    work = datavals1[idx] * multi1 + bias1;
+    work = datamatrix[0][idx] * multi1 + bias1;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
@@ -206,10 +207,10 @@ void drawGraph() {
   stroke(255, 0, 0); // for series2
   for(int idx=1; idx < numSeries2; idx++) {
     float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
-    work = datavals2[idx-1] * multi2 + bias2;
+    work = datamatrix[1][idx-1] * multi2 + bias2;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
-    work = datavals2[idx] * multi2 + bias2;
+    work = datamatrix[1][idx] * multi2 + bias2;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
