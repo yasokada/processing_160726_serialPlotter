@@ -26,9 +26,9 @@ int grstarty = 100;
 int grwidth = 600;
 int grheight = 350;
 
-final int numData = 300;
+final int maxnumData = 300;
 final int maxnumSeries = 4;
-float[][] datamatrix = new float [maxnumSeries][numData];
+float[][] datamatrix = new float [maxnumSeries][maxnumData];
 
 // for series1
 ControlP5 btnEnlarge1;
@@ -51,10 +51,10 @@ int numSeries1 = 0;
 int numSeries2 = 0;
 
 void data_setup() {
-   for(int idx=0; idx < numData; idx++) {
+   for(int idx=0; idx < maxnumData; idx++) {
      datamatrix[0][idx] = random(100);
    }
-   for(int idx=0; idx < numData; idx++) {
+   for(int idx=0; idx < maxnumData; idx++) {
      datamatrix[1][idx] = random(100);
    }
 }
@@ -195,10 +195,10 @@ void drawGraph() {
   float work;
   stroke(0, 0, 0); // for series1  
   for(int idx=1; idx < numSeries1; idx++) {
-    float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
+    float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[0][idx-1] * multi1 + bias1;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
+    float etx = map(idx, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[0][idx] * multi1 + bias1;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
@@ -206,10 +206,10 @@ void drawGraph() {
 
   stroke(255, 0, 0); // for series2
   for(int idx=1; idx < numSeries2; idx++) {
-    float stx = map(idx-1, 0, numData, grstartx, grstartx + grwidth);
+    float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[1][idx-1] * multi2 + bias2;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx, 0, numData, grstartx, grstartx + grwidth);
+    float etx = map(idx, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[1][idx] * multi2 + bias2;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
