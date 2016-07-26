@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.4 2016 Jul. 27
+ *   - use numSeriesData[] instead of [numSeries1],[numSeries2]
  *   - use datamatrix[][] instead of datavals1[], datavals2[]
  * v0.3 2016 Jul. 27
  *   - use String split() instead of processing split() to parse received data strings
@@ -29,6 +30,7 @@ int grheight = 350;
 final int maxnumData = 300;
 final int maxnumSeries = 4;
 float[][] datamatrix = new float [maxnumSeries][maxnumData];
+int numSeriesData[] = new int [maxnumSeries];
 
 // for series1
 ControlP5 btnEnlarge1;
@@ -47,15 +49,17 @@ float bias2 = 0.0;
 
 int btnX1 = 40;
 int btnX2 = 70;
-int numSeries1 = 0;
-int numSeries2 = 0;
 
 void data_setup() {
-   for(int idx=0; idx < maxnumData; idx++) {
-     datamatrix[0][idx] = random(100);
-   }
-   for(int idx=0; idx < maxnumData; idx++) {
-     datamatrix[1][idx] = random(100);
+   //for(int idx=0; idx < maxnumData; idx++) {
+   //  datamatrix[0][idx] = random(100);
+   //}
+   //for(int idx=0; idx < maxnumData; idx++) {
+   //  datamatrix[1][idx] = random(100);
+   //}
+   
+   for(int idx=0; idx < maxnumSeries; idx++) {
+     numSeriesData[idx] = 0;   
    }
 }
 
@@ -177,13 +181,13 @@ void serialEvent(Serial myPort) {
   String wrk;
   wrk = mystr.split("\\s+")[0];
   if (wrk.length() > 0) {
-    datamatrix[0][numSeries1] = float(wrk);
-    numSeries1++;
+    datamatrix[0][numSeriesData[0]] = float(wrk);
+    numSeriesData[0]++;
   }
   wrk = mystr.split("\\s+")[1];
   if (wrk.length() > 0) {
-    datamatrix[1][numSeries2] = float(wrk);
-    numSeries2++;  
+    datamatrix[1][numSeriesData[1]] = float(wrk);
+    numSeriesData[1]++;  
   }
 }
 
@@ -194,7 +198,7 @@ void drawGraph() {
 
   float work;
   stroke(0, 0, 0); // for series1  
-  for(int idx=1; idx < numSeries1; idx++) {
+  for(int idx=1; idx < numSeriesData[0]; idx++) {
     float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[0][idx-1] * multi1 + bias1;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
@@ -205,7 +209,7 @@ void drawGraph() {
   }
 
   stroke(255, 0, 0); // for series2
-  for(int idx=1; idx < numSeries2; idx++) {
+  for(int idx=1; idx < numSeriesData[1]; idx++) {
     float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[1][idx-1] * multi2 + bias2;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
