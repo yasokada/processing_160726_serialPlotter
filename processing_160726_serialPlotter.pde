@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.6 2016 Jul. 28
+ *   - move cls[] from local to file scope static as lineColors[]
  *   - loop with series index in drawGraph()
  *   - use cls[] for series line colors
  *   - use biasCoeffs[] instead of [bias1],[bias2]
@@ -43,6 +44,8 @@ int numSeriesData[] = new int [maxnumSeries];
 float multiCoeffs[] = new float [maxnumSeries];
 float biasCoeffs[] = new float [maxnumSeries];
 
+color lineColors[] = new color [maxnumData];
+
 // for series1
 ControlP5 btnEnlarge1;
 ControlP5 btnShrink1;
@@ -77,6 +80,11 @@ void data_setup() {
 }
 
 void graph_setup() {
+  lineColors[0] = color(0, 0, 0);
+  lineColors[1] = color(255, 0, 0);
+  lineColors[2] = color(0, 0, 255);
+  lineColors[3] = color(0, 255, 0);
+  
   // for series1
   btnEnlarge1 = new ControlP5(this);
   btnEnlarge1.addButton("enlarge1")
@@ -206,16 +214,11 @@ void drawGraph() {
   stroke(0, 0, 0);
   fill(255);
   rect(grstartx, grstarty, grwidth, grheight);
-  color cls[] = new color [maxnumData];
-  cls[0] = color(0, 0, 0);
-  cls[1] = color(255, 0, 0);
-  cls[2] = color(0, 0, 255);
-  cls[3] = color(0, 255, 0);
 
   float work;
   
   for(int si = 0; si < maxnumSeries; si++) { // si: series index
-    stroke(cls[si]);
+    stroke(lineColors[si]);
     for(int di_st1=1; di_st1 < numSeriesData[si]; di_st1++) { // di: data index
       int di = di_st1 - 1;
       
