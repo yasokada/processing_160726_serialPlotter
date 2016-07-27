@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.6 2016 Jul. 28
+ *   - use cls[] for series line colors
  *   - use biasCoeffs[] instead of [bias1],[bias2]
  *   - use multiCoeffs[] instead of [multi1],[multi2]
  * v0.5 2016 Jul. 28
@@ -204,9 +205,14 @@ void drawGraph() {
   stroke(0, 0, 0);
   fill(255);
   rect(grstartx, grstarty, grwidth, grheight);
+  color cls[] = new color [maxnumData];
+  cls[0] = color(0, 0, 0);
+  cls[1] = color(255, 0, 0);
+  cls[2] = color(0, 0, 255);
+  cls[3] = color(0, 255, 0);
 
   float work;
-  stroke(0, 0, 0); // for series1  
+  stroke(cls[0]); // for series1  
   for(int idx_st1=1; idx_st1 < numSeriesData[0]; idx_st1++) {
     int idx = idx_st1 - 1;
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
@@ -218,7 +224,7 @@ void drawGraph() {
     line(stx, sty, etx, ety);
   }
 
-  stroke(255, 0, 0); // for series2
+  stroke(cls[1]); // for series2
   for(int idx_st1=1; idx_st1 < numSeriesData[1]; idx_st1++) {
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
     work = datamatrix[1][idx_st1 - 1] * multiCoeffs[1] + biasCoeffs[1];
