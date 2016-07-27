@@ -186,8 +186,8 @@ void serialEvent(Serial myPort) {
   for(int si = 0; si < num; si++) { // si: series index
     String wrk = items[si];
     if (wrk.length() > 0) {
-      datamatrix[si][numSeriesData[si]] = float(wrk);
-      numSeriesData[si]++;
+      int di = numSeriesData[si]++;
+      datamatrix[si][di] = float(wrk);
     }
   }
 }
