@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.6 2016 Jul. 28
+ *   - loop with series index in drawGraph()
  *   - use cls[] for series line colors
  *   - use biasCoeffs[] instead of [bias1],[bias2]
  *   - use multiCoeffs[] instead of [multi1],[multi2]
@@ -212,27 +213,19 @@ void drawGraph() {
   cls[3] = color(0, 255, 0);
 
   float work;
-  stroke(cls[0]); // for series1  
-  for(int idx_st1=1; idx_st1 < numSeriesData[0]; idx_st1++) {
-    int idx = idx_st1 - 1;
-    float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx] * multiCoeffs[0] + biasCoeffs[0];
-    float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx_st1] * multiCoeffs[0] + biasCoeffs[0];
-    float ety = map(work, 0, 100, grheight + grstarty, grstarty);
-    line(stx, sty, etx, ety);
-  }
-
-  stroke(cls[1]); // for series2
-  for(int idx_st1=1; idx_st1 < numSeriesData[1]; idx_st1++) {
-    float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1 - 1] * multiCoeffs[1] + biasCoeffs[1];
-    float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1] * multiCoeffs[1] + biasCoeffs[1];
-    float ety = map(work, 0, 100, grheight + grstarty, grstarty);
-    line(stx, sty, etx, ety);
+  
+  for(int si = 0; si < maxnumSeries; si++) { // si: series index
+    stroke(cls[si]);
+    for(int idx_st1=1; idx_st1 < numSeriesData[si]; idx_st1++) {
+      int idx = idx_st1 - 1;
+      float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
+      work = datamatrix[si][idx] * multiCoeffs[si] + biasCoeffs[si];
+      float sty = map(work, 0, 100, grheight + grstarty, grstarty);
+      float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
+      work = datamatrix[si][idx_st1] * multiCoeffs[si] + biasCoeffs[si];
+      float ety = map(work, 0, 100, grheight + grstarty, grstarty);
+      line(stx, sty, etx, ety);
+    }
   }
 }
 
