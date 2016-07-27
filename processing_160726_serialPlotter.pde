@@ -2,6 +2,8 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ * v0.6 2016 Jul. 28
+ *   - use multiCoeffs[] instead of [multi1],[multi2]
  * v0.5 2016 Jul. 28
  *   - use [di] to store temporary index value
  *   - use String[] items to store parsed data items
@@ -35,20 +37,21 @@ final int maxnumData = 300;
 final int maxnumSeries = 4;
 float[][] datamatrix = new float [maxnumSeries][maxnumData];
 int numSeriesData[] = new int [maxnumSeries];
+float multiCoeffs[] = new float [maxnumSeries];
 
 // for series1
 ControlP5 btnEnlarge1;
 ControlP5 btnShrink1;
 ControlP5 btnUpper1;
 ControlP5 btnLower1;
-float multi1 = 1.0;
+//float multi1 = 1.0;
 float bias1 = 0.0;
 // for series2
 ControlP5 btnEnlarge2;
 ControlP5 btnShrink2;
 ControlP5 btnUpper2;
 ControlP5 btnLower2;
-float multi2 = 1.0;
+//float multi2 = 1.0;
 float bias2 = 0.0;
 
 int btnX1 = 40;
@@ -64,6 +67,9 @@ void data_setup() {
    
    for(int idx=0; idx < maxnumSeries; idx++) {
      numSeriesData[idx] = 0;   
+   }
+   for(int idx=0; idx < maxnumSeries; idx++) {
+     multiCoeffs[idx] = 1.0;
    }
 }
 
@@ -152,10 +158,10 @@ void ComPort(int n)
 }
 
 void enlarge1() {
-  multi1 *= 2.0;
+  multiCoeffs[0] *= 2.0;
 }
 void shrink1() {
-  multi1 *= 0.5; 
+  multiCoeffs[0] *= 0.5; 
 }
 void upper1() {
   bias1 += 10;
@@ -165,10 +171,10 @@ void lower1() {
 }
 
 void enlarge2() {
-  multi2 *= 2.0;
+  multiCoeffs[1] *= 2.0;
 }
 void shrink2() {
-  multi2 *= 0.5; 
+  multiCoeffs[1] *= 0.5; 
 }
 void upper2() {
   bias2 += 10;
@@ -202,10 +208,10 @@ void drawGraph() {
   stroke(0, 0, 0); // for series1  
   for(int idx_st1=1; idx_st1 < numSeriesData[0]; idx_st1++) {
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx_st1 - 1] * multi1 + bias1;
+    work = datamatrix[0][idx_st1 - 1] * multiCoeffs[idx_st1 - 1] + bias1;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx_st1] * multi1 + bias1;
+    work = datamatrix[0][idx_st1] * multiCoeffs[idx_st1 - 1] + bias1;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
@@ -213,10 +219,10 @@ void drawGraph() {
   stroke(255, 0, 0); // for series2
   for(int idx_st1=1; idx_st1 < numSeriesData[1]; idx_st1++) {
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1 - 1] * multi2 + bias2;
+    work = datamatrix[1][idx_st1 - 1] * multiCoeffs[1] + bias2;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1] * multi2 + bias2;
+    work = datamatrix[1][idx_st1] * multiCoeffs[1] + bias2;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
