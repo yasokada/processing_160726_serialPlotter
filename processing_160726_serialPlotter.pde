@@ -2,6 +2,8 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ * v0.5 2016 Jul. 28
+ *   - use String[] items to store parsed data items
  * v0.4 2016 Jul. 27
  *   - use for loop for parsing received data string for serieses
  *   - use numSeriesData[] instead of [numSeries1],[numSeries2]
@@ -179,9 +181,10 @@ void serialEvent(Serial myPort) {
   mystr = trim(mystr);
   println(mystr);
     
-  String wrk;
-  for(int si = 0; si < maxnumSeries; si++) { // si: series index
-    wrk = mystr.split("\\s+")[si];
+  String[] items = mystr.split("\\s+");
+  int num = Math.min(items.length, maxnumSeries);
+  for(int si = 0; si < num; si++) { // si: series index
+    String wrk = items[si];
     if (wrk.length() > 0) {
       datamatrix[si][numSeriesData[si]] = float(wrk);
       numSeriesData[si]++;
