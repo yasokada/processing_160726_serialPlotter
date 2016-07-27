@@ -216,14 +216,17 @@ void drawGraph() {
   
   for(int si = 0; si < maxnumSeries; si++) { // si: series index
     stroke(cls[si]);
-    for(int idx_st1=1; idx_st1 < numSeriesData[si]; idx_st1++) {
-      int idx = idx_st1 - 1;
-      float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-      work = datamatrix[si][idx] * multiCoeffs[si] + biasCoeffs[si];
+    for(int di_st1=1; di_st1 < numSeriesData[si]; di_st1++) { // di: data index
+      int di = di_st1 - 1;
+      
+      float stx = map(di, 0, maxnumData, grstartx, grstartx + grwidth);
+      work = datamatrix[si][di] * multiCoeffs[si] + biasCoeffs[si];
       float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-      float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-      work = datamatrix[si][idx_st1] * multiCoeffs[si] + biasCoeffs[si];
+      
+      float etx = map(di_st1, 0, maxnumData, grstartx, grstartx + grwidth);
+      work = datamatrix[si][di_st1] * multiCoeffs[si] + biasCoeffs[si];
       float ety = map(work, 0, 100, grheight + grstarty, grstarty);
+      
       line(stx, sty, etx, ety);
     }
   }
