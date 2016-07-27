@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.5 2016 Jul. 28
+ *   - use [di] to store temporary index value
  *   - use String[] items to store parsed data items
  * v0.4 2016 Jul. 27
  *   - use for loop for parsing received data string for serieses
@@ -199,23 +200,23 @@ void drawGraph() {
 
   float work;
   stroke(0, 0, 0); // for series1  
-  for(int idx=1; idx < numSeriesData[0]; idx++) {
-    float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx-1] * multi1 + bias1;
+  for(int idx_st1=1; idx_st1 < numSeriesData[0]; idx_st1++) {
+    float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
+    work = datamatrix[0][idx_st1 - 1] * multi1 + bias1;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx] * multi1 + bias1;
+    float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
+    work = datamatrix[0][idx_st1] * multi1 + bias1;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
 
   stroke(255, 0, 0); // for series2
-  for(int idx=1; idx < numSeriesData[1]; idx++) {
-    float stx = map(idx-1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx-1] * multi2 + bias2;
+  for(int idx_st1=1; idx_st1 < numSeriesData[1]; idx_st1++) {
+    float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
+    work = datamatrix[1][idx_st1 - 1] * multi2 + bias2;
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
-    float etx = map(idx, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx] * multi2 + bias2;
+    float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
+    work = datamatrix[1][idx_st1] * multi2 + bias2;
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
