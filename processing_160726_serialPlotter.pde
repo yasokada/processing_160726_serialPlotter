@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.6 2016 Jul. 28
+ *   - use biasCoeffs[] instead of [bias1],[bias2]
  *   - use multiCoeffs[] instead of [multi1],[multi2]
  * v0.5 2016 Jul. 28
  *   - use [di] to store temporary index value
@@ -38,21 +39,18 @@ final int maxnumSeries = 4;
 float[][] datamatrix = new float [maxnumSeries][maxnumData];
 int numSeriesData[] = new int [maxnumSeries];
 float multiCoeffs[] = new float [maxnumSeries];
+float biasCoeffs[] = new float [maxnumSeries];
 
 // for series1
 ControlP5 btnEnlarge1;
 ControlP5 btnShrink1;
 ControlP5 btnUpper1;
 ControlP5 btnLower1;
-//float multi1 = 1.0;
-float bias1 = 0.0;
 // for series2
 ControlP5 btnEnlarge2;
 ControlP5 btnShrink2;
 ControlP5 btnUpper2;
 ControlP5 btnLower2;
-//float multi2 = 1.0;
-float bias2 = 0.0;
 
 int btnX1 = 40;
 int btnX2 = 70;
@@ -70,6 +68,9 @@ void data_setup() {
    }
    for(int idx=0; idx < maxnumSeries; idx++) {
      multiCoeffs[idx] = 1.0;
+   }
+   for(int idx=0; idx < maxnumSeries; idx++) {   
+     biasCoeffs[idx] = 0.0;
    }
 }
 
@@ -164,10 +165,10 @@ void shrink1() {
   multiCoeffs[0] *= 0.5; 
 }
 void upper1() {
-  bias1 += 10;
+  biasCoeffs[0] += 10;
 }  
 void lower1() {
-  bias1 -= 10;
+  biasCoeffs[0] -= 10;
 }
 
 void enlarge2() {
@@ -177,10 +178,10 @@ void shrink2() {
   multiCoeffs[1] *= 0.5; 
 }
 void upper2() {
-  bias2 += 10;
+  biasCoeffs[1] += 10;
 }  
 void lower2() {
-  bias2 -= 10;
+  biasCoeffs[1] -= 10;
 }
 
 void serialEvent(Serial myPort) {
@@ -207,11 +208,12 @@ void drawGraph() {
   float work;
   stroke(0, 0, 0); // for series1  
   for(int idx_st1=1; idx_st1 < numSeriesData[0]; idx_st1++) {
+    int idx = idx_st1 - 1;
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx_st1 - 1] * multiCoeffs[idx_st1 - 1] + bias1;
+    work = datamatrix[0][idx] * multiCoeffs[0] + biasCoeffs[0];
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[0][idx_st1] * multiCoeffs[idx_st1 - 1] + bias1;
+    work = datamatrix[0][idx_st1] * multiCoeffs[0] + biasCoeffs[0];
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
@@ -219,10 +221,10 @@ void drawGraph() {
   stroke(255, 0, 0); // for series2
   for(int idx_st1=1; idx_st1 < numSeriesData[1]; idx_st1++) {
     float stx = map(idx_st1 - 1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1 - 1] * multiCoeffs[1] + bias2;
+    work = datamatrix[1][idx_st1 - 1] * multiCoeffs[1] + biasCoeffs[1];
     float sty = map(work, 0, 100, grheight + grstarty, grstarty);
     float etx = map(idx_st1, 0, maxnumData, grstartx, grstartx + grwidth);
-    work = datamatrix[1][idx_st1] * multiCoeffs[1] + bias2;
+    work = datamatrix[1][idx_st1] * multiCoeffs[1] + biasCoeffs[1];
     float ety = map(work, 0, 100, grheight + grstarty, grstarty);
     line(stx, sty, etx, ety);
   }
