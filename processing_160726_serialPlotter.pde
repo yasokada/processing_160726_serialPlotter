@@ -2,6 +2,7 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ *   - use btnXs[] instead of [btnX1],[btnX2]
  *   - display ymin and ymax labes for series 1 and 2
  *   - add drawAxisLabels()
  * v0.6 2016 Jul. 28
@@ -62,8 +63,9 @@ ControlP5 btnShrink2;
 ControlP5 btnUpper2;
 ControlP5 btnLower2;
 
-int btnX1 = 20;
-int btnX2 = 65;
+int btnXs[] = { 20, 65 };
+//int btnX1 = 20;
+//int btnX2 = 65;
 
 void data_setup() {
    //for(int idx=0; idx < maxnumData; idx++) {
@@ -94,50 +96,50 @@ void graph_setup() {
   btnEnlarge1 = new ControlP5(this);
   btnEnlarge1.addButton("enlarge1")
     .setLabel("*")
-    .setPosition(btnX1, 150)
+    .setPosition(btnXs[0], 150)
     .setSize(20,20);
 
   btnEnlarge1 = new ControlP5(this);
   btnEnlarge1.addButton("shrink1")
     .setLabel("/")
-    .setPosition(btnX1, 180)
+    .setPosition(btnXs[0], 180)
     .setSize(20,20);
 
   btnUpper1 = new ControlP5(this);
   btnUpper1.addButton("upper1")
     .setLabel("+")
-    .setPosition(btnX1, 350)
+    .setPosition(btnXs[0], 350)
     .setSize(20,20);   
 
   btnLower1 = new ControlP5(this);
   btnLower1.addButton("lower1")
     .setLabel("-")
-    .setPosition(btnX1, 380)
+    .setPosition(btnXs[0], 380)
     .setSize(20,20);
 
   // for series2
   btnEnlarge2 = new ControlP5(this);
   btnEnlarge2.addButton("enlarge2")
     .setLabel("*")
-    .setPosition(btnX2, 150)
+    .setPosition(btnXs[1], 150)
     .setSize(20,20);
 
   btnEnlarge2 = new ControlP5(this);
   btnEnlarge2.addButton("shrink2")
     .setLabel("/")
-    .setPosition(btnX2, 180)
+    .setPosition(btnXs[1], 180)
     .setSize(20,20);
 
   btnUpper2 = new ControlP5(this);
   btnUpper2.addButton("upper2")
     .setLabel("+")
-    .setPosition(btnX2, 350)
+    .setPosition(btnXs[1], 350)
     .setSize(20,20);   
 
   btnLower2 = new ControlP5(this);
   btnLower2.addButton("lower2")
     .setLabel("-")
-    .setPosition(btnX2, 380)
+    .setPosition(btnXs[1], 380)
     .setSize(20,20);
 }
 
@@ -252,24 +254,24 @@ void drawAxisLabels() {
    ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
    msg = String.format("%.3f", ymx);
    textAlign(RIGHT);
-   text(msg, btnX1 + shiftX, grstarty - 10, 40, 40);
+   text(msg, btnXs[si] + shiftX, grstarty - 10, 40, 40);
    
    ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
    msg = String.format("%.3f", ymn);
    textAlign(RIGHT);
-   text(msg, btnX1 + shiftX, grstarty + grheight - 10, 40, 40);   
+   text(msg, btnXs[si] + shiftX, grstarty + grheight - 10, 40, 40);   
 
    // series 2
    si = 1;
    ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
    msg = String.format("%.3f", ymx);
    textAlign(RIGHT);
-   text(msg, btnX2 + shiftX, grstarty - 10, 40, 40);
+   text(msg, btnXs[si] + shiftX, grstarty - 10, 40, 40);
 
    ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
    msg = String.format("%.3f", ymn);
    textAlign(RIGHT);
-   text(msg, btnX2 + shiftX, grstarty + grheight - 10, 40, 40);       
+   text(msg, btnXs[si] + shiftX, grstarty + grheight - 10, 40, 40);       
 }
 
 void draw() {
