@@ -2,6 +2,7 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ *   - use nameEnlargeButtons[] to name the enlarge buttons
  *   - use btnXs[] instead of [btnX1],[btnX2]
  *   - display ymin and ymax labes for series 1 and 2
  *   - add drawAxisLabels()
@@ -84,15 +85,20 @@ void data_setup() {
    }
 }
 
+String nameEnlargeButtons[] = { "enlarge1", "enlarge2" };
+
 void graph_setup() {
   lineColors[0] = color(0, 0, 0);
   lineColors[1] = color(255, 0, 0);
   lineColors[2] = color(0, 0, 255);
   lineColors[3] = color(0, 255, 0);
   
+  int si; // series index
+  
   // for series1
+  si = 0;
   btnEnlarge1 = new ControlP5(this);
-  btnEnlarge1.addButton("enlarge1")
+  btnEnlarge1.addButton(nameEnlargeButtons[si])
     .setLabel("*")
     .setPosition(btnXs[0], 150)
     .setSize(20,20);
@@ -116,8 +122,9 @@ void graph_setup() {
     .setSize(20,20);
 
   // for series2
+  si = 1;
   btnEnlarge2 = new ControlP5(this);
-  btnEnlarge2.addButton("enlarge2")
+  btnEnlarge2.addButton(nameEnlargeButtons[si])
     .setLabel("*")
     .setPosition(btnXs[1], 150)
     .setSize(20,20);
