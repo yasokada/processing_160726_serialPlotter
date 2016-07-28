@@ -2,6 +2,8 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ * v0.7 2016 Jul. 28
+ *   - loop with series in graph_setup()
  *   - use nameEnlargeButtons[] to name the enlarge buttons
  *   - use btnXs[] instead of [btnX1],[btnX2]
  *   - display ymin and ymax labes for series 1 and 2
@@ -85,7 +87,10 @@ void data_setup() {
    }
 }
 
-String nameEnlargeButtons[] = { "enlarge1", "enlarge2" };
+final String nameEnlargeButtons[] = { "enlarge1", "enlarge2" };
+final String nameShrinkButtons[] = { "shrink1", "shrink2" };
+final String nameUpperButtons[] = { "upper1", "upper2" };
+final String nameLowerButtons[] = { "lower1", "lower2" };
 
 void graph_setup() {
   lineColors[0] = color(0, 0, 0);
@@ -93,59 +98,32 @@ void graph_setup() {
   lineColors[2] = color(0, 0, 255);
   lineColors[3] = color(0, 255, 0);
   
-  int si; // series index
+  for(int si=0; si < 2; si ++) { // si: series index
+    btnEnlarge1 = new ControlP5(this);
+    btnEnlarge1.addButton(nameEnlargeButtons[si])
+      .setLabel("*")
+      .setPosition(btnXs[si], 150)
+      .setSize(20,20);
   
-  // for series1
-  si = 0;
-  btnEnlarge1 = new ControlP5(this);
-  btnEnlarge1.addButton(nameEnlargeButtons[si])
-    .setLabel("*")
-    .setPosition(btnXs[0], 150)
-    .setSize(20,20);
-
-  btnEnlarge1 = new ControlP5(this);
-  btnEnlarge1.addButton("shrink1")
-    .setLabel("/")
-    .setPosition(btnXs[0], 180)
-    .setSize(20,20);
-
-  btnUpper1 = new ControlP5(this);
-  btnUpper1.addButton("upper1")
-    .setLabel("+")
-    .setPosition(btnXs[0], 350)
-    .setSize(20,20);   
-
-  btnLower1 = new ControlP5(this);
-  btnLower1.addButton("lower1")
-    .setLabel("-")
-    .setPosition(btnXs[0], 380)
-    .setSize(20,20);
-
-  // for series2
-  si = 1;
-  btnEnlarge2 = new ControlP5(this);
-  btnEnlarge2.addButton(nameEnlargeButtons[si])
-    .setLabel("*")
-    .setPosition(btnXs[1], 150)
-    .setSize(20,20);
-
-  btnEnlarge2 = new ControlP5(this);
-  btnEnlarge2.addButton("shrink2")
-    .setLabel("/")
-    .setPosition(btnXs[1], 180)
-    .setSize(20,20);
-
-  btnUpper2 = new ControlP5(this);
-  btnUpper2.addButton("upper2")
-    .setLabel("+")
-    .setPosition(btnXs[1], 350)
-    .setSize(20,20);   
-
-  btnLower2 = new ControlP5(this);
-  btnLower2.addButton("lower2")
-    .setLabel("-")
-    .setPosition(btnXs[1], 380)
-    .setSize(20,20);
+    btnEnlarge1 = new ControlP5(this);
+    btnEnlarge1.addButton(nameShrinkButtons[si])
+      .setLabel("/")
+      .setPosition(btnXs[si], 180)
+      .setSize(20,20);
+  
+    btnUpper1 = new ControlP5(this);
+    btnUpper1.addButton(nameUpperButtons[si])
+      .setLabel("+")
+      .setPosition(btnXs[si], 350)
+      .setSize(20,20);   
+  
+    btnLower1 = new ControlP5(this);
+    btnLower1.addButton(nameLowerButtons[si])
+      .setLabel("-")
+      .setPosition(btnXs[si], 380)
+      .setSize(20,20);
+  }
+  
 }
 
 void comUI_setup() {
