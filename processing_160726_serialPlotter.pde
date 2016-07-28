@@ -64,8 +64,6 @@ ControlP5 btnUpper2;
 ControlP5 btnLower2;
 
 int btnXs[] = { 20, 65 };
-//int btnX1 = 20;
-//int btnX2 = 65;
 
 void data_setup() {
    //for(int idx=0; idx < maxnumData; idx++) {
@@ -243,35 +241,22 @@ void drawGraph() {
 }
 
 void drawAxisLabels() {
-   String msg;
-   int shiftX = -10;
-   
-   float ymn, ymx;
-   int si; // series index
+   final int shiftX = -10;   
 
-   // series 1
-   si = 0;
-   ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
-   msg = String.format("%.3f", ymx);
-   textAlign(RIGHT);
-   text(msg, btnXs[si] + shiftX, grstarty - 10, 40, 40);
-   
-   ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
-   msg = String.format("%.3f", ymn);
-   textAlign(RIGHT);
-   text(msg, btnXs[si] + shiftX, grstarty + grheight - 10, 40, 40);   
+   for (int si=0; si < 2; si++) { // si: series index
+     float ymn, ymx;
+     String msg;
 
-   // series 2
-   si = 1;
-   ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
-   msg = String.format("%.3f", ymx);
-   textAlign(RIGHT);
-   text(msg, btnXs[si] + shiftX, grstarty - 10, 40, 40);
-
-   ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
-   msg = String.format("%.3f", ymn);
-   textAlign(RIGHT);
-   text(msg, btnXs[si] + shiftX, grstarty + grheight - 10, 40, 40);       
+     ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
+     msg = String.format("%.3f", ymx);
+     textAlign(RIGHT);
+     text(msg, btnXs[si] + shiftX, grstarty - 10, 40, 40);
+     
+     ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
+     msg = String.format("%.3f", ymn);
+     textAlign(RIGHT);
+     text(msg, btnXs[si] + shiftX, grstarty + grheight - 10, 40, 40);   
+   }
 }
 
 void draw() {
