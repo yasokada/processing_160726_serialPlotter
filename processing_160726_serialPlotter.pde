@@ -3,6 +3,7 @@ import controlP5.*;
 
 /*
  * v0.7 2016 Jul. 28
+ *   - add buttons and Y axis labels for series 3 and 4
  *   - loop with series in graph_setup()
  *   - use nameEnlargeButtons[] to name the enlarge buttons
  *   - use btnXs[] instead of [btnX1],[btnX2]
@@ -66,7 +67,7 @@ ControlP5 btnShrink2;
 ControlP5 btnUpper2;
 ControlP5 btnLower2;
 
-int btnXs[] = { 20, 65 };
+int btnXs[] = { 20, 65, 720, 765 };
 
 void data_setup() {
    //for(int idx=0; idx < maxnumData; idx++) {
@@ -87,10 +88,10 @@ void data_setup() {
    }
 }
 
-final String nameEnlargeButtons[] = { "enlarge1", "enlarge2" };
-final String nameShrinkButtons[] = { "shrink1", "shrink2" };
-final String nameUpperButtons[] = { "upper1", "upper2" };
-final String nameLowerButtons[] = { "lower1", "lower2" };
+final String nameEnlargeButtons[] = { "enlarge1", "enlarge2", "enlarge3", "enlarge4" };
+final String nameShrinkButtons[] = { "shrink1", "shrink2", "shrink3", "shrink4" };
+final String nameUpperButtons[] = { "upper1", "upper2", "upper3", "upper4" };
+final String nameLowerButtons[] = { "lower1", "lower2", "lower3", "lower4" };
 
 void graph_setup() {
   lineColors[0] = color(0, 0, 0);
@@ -98,7 +99,7 @@ void graph_setup() {
   lineColors[2] = color(0, 0, 255);
   lineColors[3] = color(0, 255, 0);
   
-  for(int si=0; si < 2; si ++) { // si: series index
+  for(int si=0; si < maxnumSeries; si ++) { // si: series index
     btnEnlarge1 = new ControlP5(this);
     btnEnlarge1.addButton(nameEnlargeButtons[si])
       .setLabel("*")
@@ -184,6 +185,32 @@ void lower2() {
   biasCoeffs[1] -= 10;
 }
 
+void enlarge3() {
+  multiCoeffs[2] *= 2.0;
+}
+void shrink3() {
+  multiCoeffs[2] *= 0.5; 
+}
+void upper3() {
+  biasCoeffs[2] += 10;
+}  
+void lower3() {
+  biasCoeffs[2] -= 10;
+}
+
+void enlarge4() {
+  multiCoeffs[3] *= 2.0;
+}
+void shrink4() {
+  multiCoeffs[3] *= 0.5; 
+}
+void upper4() {
+  biasCoeffs[3] += 10;
+}  
+void lower4() {
+  biasCoeffs[3] -= 10;
+}
+
 void serialEvent(Serial myPort) {
   String mystr = myPort.readStringUntil('\n');
   mystr = trim(mystr);
@@ -228,7 +255,7 @@ void drawGraph() {
 void drawAxisLabels() {
    final int shiftX = -10;   
 
-   for (int si=0; si < 2; si++) { // si: series index
+   for (int si=0; si < maxnumSeries; si++) { // si: series index
      float ymn, ymx;
      String msg;
 
