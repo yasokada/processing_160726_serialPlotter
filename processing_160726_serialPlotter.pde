@@ -2,6 +2,7 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ *   - add drawAxisLabels()
  * v0.6 2016 Jul. 28
  *   - move cls[] from local to file scope static as lineColors[]
  *   - loop with series index in drawGraph()
@@ -57,8 +58,8 @@ ControlP5 btnShrink2;
 ControlP5 btnUpper2;
 ControlP5 btnLower2;
 
-int btnX1 = 40;
-int btnX2 = 70;
+int btnX1 = 20;
+int btnX2 = 65;
 
 void data_setup() {
    //for(int idx=0; idx < maxnumData; idx++) {
@@ -235,7 +236,29 @@ void drawGraph() {
   }
 }
 
+void drawAxisLabels() {
+   String msg;
+   int shiftX = -10;
+   
+   msg = String.format("%.3f", 3.141592);
+   textAlign(RIGHT);
+   text(msg, btnX1 + shiftX, grstarty - 10, 40, 40);
+   
+   msg = String.format("%.3f", 0.0);
+   textAlign(RIGHT);
+   text(msg, btnX1 + shiftX, grstarty + grheight - 10, 40, 40);   
+
+   msg = String.format("%.3f", 2.7182);
+   textAlign(RIGHT);
+   text(msg, btnX2 + shiftX, grstarty - 10, 40, 40);
+
+   msg = String.format("%.3f", 0.0);
+   textAlign(RIGHT);
+   text(msg, btnX2 + shiftX, grstarty + grheight - 10, 40, 40);       
+}
+
 void draw() {
   background(150);
   drawGraph();
+  drawAxisLabels();
 }
