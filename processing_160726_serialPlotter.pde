@@ -2,6 +2,7 @@ import processing.serial.*;
 import controlP5.*;
 
 /*
+ *   - display ymin and ymax labes for series 1 and 2
  *   - add drawAxisLabels()
  * v0.6 2016 Jul. 28
  *   - move cls[] from local to file scope static as lineColors[]
@@ -37,6 +38,9 @@ int grstartx = 100;
 int grstarty = 100;
 int grwidth = 600;
 int grheight = 350;
+
+float grOriginalYMax = 100.0;
+float grOriginalYMin = 0.0;
 
 final int maxnumData = 300;
 final int maxnumSeries = 4;
@@ -240,19 +244,30 @@ void drawAxisLabels() {
    String msg;
    int shiftX = -10;
    
-   msg = String.format("%.3f", 3.141592);
+   float ymn, ymx;
+   int si; // series index
+
+   // series 1
+   si = 0;
+   ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
+   msg = String.format("%.3f", ymx);
    textAlign(RIGHT);
    text(msg, btnX1 + shiftX, grstarty - 10, 40, 40);
    
-   msg = String.format("%.3f", 0.0);
+   ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
+   msg = String.format("%.3f", ymn);
    textAlign(RIGHT);
    text(msg, btnX1 + shiftX, grstarty + grheight - 10, 40, 40);   
 
-   msg = String.format("%.3f", 2.7182);
+   // series 2
+   si = 1;
+   ymx = (grOriginalYMax - biasCoeffs[si]) / multiCoeffs[si];   
+   msg = String.format("%.3f", ymx);
    textAlign(RIGHT);
    text(msg, btnX2 + shiftX, grstarty - 10, 40, 40);
 
-   msg = String.format("%.3f", 0.0);
+   ymn = (grOriginalYMin - biasCoeffs[si]) / multiCoeffs[si];   
+   msg = String.format("%.3f", ymn);
    textAlign(RIGHT);
    text(msg, btnX2 + shiftX, grstarty + grheight - 10, 40, 40);       
 }
